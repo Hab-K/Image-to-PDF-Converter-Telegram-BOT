@@ -3,7 +3,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 from dotenv import load_dotenv
 import os
 from pathlib import Path
-from playwright_test import convert_img
+from .converter import convert_img
 
 load_dotenv()
 IMAGE_EXTENSIONS = {
@@ -19,10 +19,9 @@ IMAGE_EXTENSIONS = {
     ".heic",
     ".webp",
 }
-user_sessions = {}
+
 
 Token = os.getenv("Bot_Token")
-user_sessions = {}
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
@@ -181,7 +180,7 @@ async def new_conversion_process(update: Update, context: ContextTypes.DEFAULT_T
     await update.message.reply_text('New Conversion started\nSend me your images')
 
 
-def main():
+def create_application():
     app = Application.builder().token(Token).build()
 
     app.add_handler(CommandHandler('start', start))
@@ -193,8 +192,8 @@ def main():
 
     print ('Bot is running')
 
-    app.run_polling()
+    return app
 
 
 if __name__== '__main__':
-    main()
+    create_application()

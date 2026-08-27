@@ -17,8 +17,7 @@ async def convert_img(image_paths, output_path):
         try:
             browser  = await p.chromium.launch(
                     headless=True,
-                    executable_path=r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-            )
+                )
             
             page = await browser.new_page()
             await page.goto('https://www.ilovepdf.com/jpg_to_pdf')         
