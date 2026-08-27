@@ -132,6 +132,7 @@ async def run_conversion (update, context, img_folder, image_paths, output_path)
         context.user_data['converting'] = False
 
 async def convert_command(update, context):
+    print('this is convert command', flush=True)
     user_id = update.effective_user.id
 
     if context.user_data.get("converting", False):
