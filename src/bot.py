@@ -73,7 +73,7 @@ async def process_file(tel_file, img_count: int, update: Update, context, extens
     await file.download_to_drive(file_path)
     
     context.user_data.setdefault('images', []).append(file_path)
-    await update.message.reply_text('image received!')
+    await update.message.reply_text('image received!\n\n ➕ Add More Images📄 Convert to PDF /convert\n❌ Cancel /new')
     
 async def receive_image(update: Update, context: ContextTypes.DEFAULT_TYPE):
     img_count = len(context.user_data.get('images', []))
@@ -88,7 +88,7 @@ async def receive_image(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     await process_file(photo, img_count, update, context, '.jpg')
 
-async def receive_document(update,context):
+async def receive_document(update: Update,context: ContextTypes.DEFAULT_TYPE):
 
     img_count = len(context.user_data.get('images', []))
 
@@ -131,7 +131,7 @@ async def run_conversion (update, context, img_folder, image_paths, output_path)
     finally:
         context.user_data['converting'] = False
 
-async def convert_command(update, context):
+async def convert_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print('this is convert command', flush=True)
     user_id = update.effective_user.id
 
@@ -167,10 +167,6 @@ async def convert_command(update, context):
 
     await update.message.reply_text(f"Images Received -- {img_count}\n🔄 Converting your images...")
 
-    
-    
-   
-
 
 async def new_conversion_process(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if context.user_data.get('converting', False):
@@ -186,13 +182,30 @@ async def new_conversion_process(update: Update, context: ContextTypes.DEFAULT_T
 
     await update.message.reply_text('New Conversion started\nSend me your images')
 
+async def display_help(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        '''\t📖 How to use ImageToPDF\n\n
 
+        1️⃣ Send an image.\n
+        2️⃣ Add more images if needed.\n
+        3️⃣ Press "Convert to PDF".\n
+        4️⃣ I'll create and send your PDF.\n\n
+
+        You can send multiple images to create a multi-page PDF.\n\n
+
+        Commands:\n
+        /start — Start the bot\n
+        /convert — Convert the uploaded Images to Pdf \n
+        /help — Show these instructions\n
+        /new — Start new conversion''' 
+    )
 def create_application():
     app = Application.builder().token(Token).build()
 
     app.add_handler(CommandHandler('start', start))
     app.add_handler(CommandHandler('new', new_conversion_process))
     app.add_handler(CommandHandler('convert', convert_command))
+    app.add_handler(CommandHandler('help', display_help))
 
     app.add_handler(MessageHandler(filters.PHOTO, receive_image))
     app.add_handler(MessageHandler(filters.Document.ALL, receive_document))
