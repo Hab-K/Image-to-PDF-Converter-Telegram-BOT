@@ -1,13 +1,5 @@
 from playwright.async_api import async_playwright
 from pathlib import Path
-async def main():
-    images = [
-       r'downloads\6612246169\01.jpg',
-       r'downloads\6612246169\01.jpg' 
-    ]
-    output = Path('downloads')/'converted.pdf'
-
-    await convert_img(images, output)
 
 async def convert_img(image_paths, output_path):
     
@@ -49,7 +41,3 @@ async def convert_img(image_paths, output_path):
                 await browser.close()
 
         
-
-if __name__ == "__main__":
-    import asyncio
-    asyncio.run(main())

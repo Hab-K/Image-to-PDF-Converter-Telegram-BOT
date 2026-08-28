@@ -73,7 +73,7 @@ async def process_file(tel_file, img_count: int, update: Update, context, extens
     await file.download_to_drive(file_path)
     
     context.user_data.setdefault('images', []).append(file_path)
-    await update.message.reply_text(f'received your image and saved successfully \n{image_number}')
+    await update.message.reply_text('image received!')
     
 async def receive_image(update: Update, context: ContextTypes.DEFAULT_TYPE):
     img_count = len(context.user_data.get('images', []))
@@ -141,7 +141,7 @@ async def convert_command(update, context):
         )
         return
     
-    
+    img_count = len(context.user_data.get('images', []))
     
     user_folder = Path('../downloads') / str(user_id)
     
@@ -165,7 +165,7 @@ async def convert_command(update, context):
         run_conversion(update, context, img_folder, image_paths, output_path)
     )
 
-    await update.message.reply_text("🔄 Converting your images...")
+    await update.message.reply_text(f"Images Received -- {img_count}\n🔄 Converting your images...")
 
     
     
