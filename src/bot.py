@@ -141,7 +141,10 @@ async def convert_command(update, context):
         )
         return
     
-
+    if not img_folder.exists():
+        await update.message.reply_text("You haven't uploaded any image")
+        return
+    
     user_folder = Path('../downloads') / str(user_id)
     
     img_folder = user_folder / 'images'
